@@ -5,10 +5,9 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
-// If deploying to https://<username>.github.io/<repo>/ (not custom domain),
-// change base to '/<repo>/'
+// When using a custom domain, change base back to "/"
 export default defineConfig({
-  base: "/",
+  base: "/terminal-web/",
   plugins: [
     react(),
     VitePWA({
