@@ -6,10 +6,46 @@
   "scope": "/terminal-web/",
   "icons": [
     {
-      "src": "/terminal-web/og-image.png",
-      "sizes": "1200x630",
+      "src": "/terminal-web/maskable-icons/maskable_icon_x48.png",
+      "sizes": "48x48",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/terminal-web/maskable-icons/maskable_icon_x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/terminal-web/maskable-icons/maskable_icon_x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/terminal-web/maskable-icons/maskable_icon_x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/terminal-web/maskable-icons/maskable_icon_x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/terminal-web/maskable-icons/maskable_icon_x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/terminal-web/maskable-icons/maskable_icon_x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "theme_color": "#1d2a35",
