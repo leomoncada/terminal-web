@@ -1,5 +1,7 @@
 import { cleanup, render } from "@testing-library/react";
+import { ThemeProvider } from "styled-components";
 import { afterEach } from "vitest";
+import darkTheme from "../components/styles/themes";
 
 afterEach(() => {
   cleanup();
@@ -7,12 +9,12 @@ afterEach(() => {
 
 const customRender = (ui: React.ReactElement, options = {}) =>
   render(ui, {
-    // wrap provider(s) here if needed
-    wrapper: ({ children }) => children,
+    wrapper: ({ children }) => (
+      <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>
+    ),
     ...options,
   });
 
 export * from "@testing-library/react";
 export { default as userEvent } from "@testing-library/user-event";
-// override render export
 export { customRender as render };

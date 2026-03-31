@@ -5,8 +5,10 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
-// https://vitejs.dev/config/
+// If deploying to https://<username>.github.io/<repo>/ (not custom domain),
+// change base to '/<repo>/'
 export default defineConfig({
+  base: "/",
   plugins: [
     react(),
     VitePWA({
@@ -15,7 +17,7 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/test/setup.ts',
+    environment: "jsdom",
+    setupFiles: "./src/test/setup.ts",
   },
 });

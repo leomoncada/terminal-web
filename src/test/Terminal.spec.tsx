@@ -1,9 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { UserEvent } from "@testing-library/user-event/dist/types/setup/setup";
 import { render, screen, userEvent } from "../utils/test-utils";
 import Terminal, { commands } from "../components/Terminal";
 
-// setup function
 function setup(jsx: JSX.Element) {
   return {
     user: userEvent.setup(),
@@ -47,22 +46,29 @@ describe("Terminal Component", () => {
       );
     });
 
-    it("should return 'visitor' when user type 'whoami' cmd", async () => {
-      await user.type(terminalInput, "whoami{enter}");
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        "visitor"
-      );
+    it("should render Welcome component when user type 'welcome' cmd", async () => {
+      await user.type(terminalInput, "clear{enter}");
+      await user.type(terminalInput, "welcome{enter}");
+      expect(screen.getByTestId("welcome")).toBeInTheDocument();
     });
 
-    it("should return '/home/satnaing' when user type 'pwd' cmd", async () => {
-      await user.type(terminalInput, "pwd{enter}");
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        "/home/satnaing"
-      );
+    const testCmds = [
+      "about",
+      "contact",
+      "experience",
+      "help",
+      "history",
+      "skills",
+    ];
+    testCmds.forEach(cmd => {
+      it(`should render ${cmd} component when user type '${cmd}' cmd`, async () => {
+        await user.type(terminalInput, `${cmd}{enter}`);
+        expect(screen.getByTestId(`${cmd}`)).toBeInTheDocument();
+      });
     });
 
     it("should display cmd history when user type 'history' cmd", async () => {
-      await user.type(terminalInput, "whoami{enter}");
+      await user.type(terminalInput, "about{enter}");
       await user.type(terminalInput, "history{enter}");
 
       const commands =
@@ -75,106 +81,17 @@ describe("Terminal Component", () => {
         typedCommands.push(cmd.textContent || "");
       });
 
-      expect(typedCommands).toEqual(["welcome", "whoami", "history"]);
+      expect(typedCommands).toEqual(["welcome", "about", "history"]);
     });
 
     it("should clear everything when user type 'clear' cmd", async () => {
       await user.type(terminalInput, "clear{enter}");
       expect(screen.getByTestId("terminal-wrapper").children.length).toBe(1);
     });
-
-    it("should return `hello world` when user type `echo hello world` cmd", async () => {
-      await user.type(terminalInput, "echo hello world{enter}");
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        "hello world"
-      );
-    });
-
-    it("should return `hello world` without quotes when user type `echo 'hello world'` cmd", async () => {
-      // omit single quotes
-      await user.type(terminalInput, "echo 'hello world'{enter}");
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        "hello world"
-      );
-
-      // omit double quotes
-      await user.type(terminalInput, 'echo "hello world"{enter}');
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        "hello world"
-      );
-
-      // omit backtick
-      await user.type(terminalInput, "echo `hello world`{enter}");
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        "hello world"
-      );
-    });
-
-    it("should render Welcome component when user type 'welcome' cmd", async () => {
-      await user.type(terminalInput, "clear{enter}");
-      await user.type(terminalInput, "welcome{enter}");
-      expect(screen.getByTestId("welcome")).toBeInTheDocument();
-    });
-
-    const otherCmds = [
-      "about",
-      "education",
-      "help",
-      "history",
-      "projects",
-      "socials",
-      "themes",
-    ];
-    otherCmds.forEach(cmd => {
-      it(`should render ${cmd} component when user type '${cmd}' cmd`, async () => {
-        await user.type(terminalInput, `${cmd}{enter}`);
-        expect(screen.getByTestId(`${cmd}`)).toBeInTheDocument();
-      });
-    });
-  });
-
-  describe("Redirect commands", () => {
-    beforeEach(() => {
-      window.open = vi.fn();
-    });
-
-    it("should redirect to portfolio website when user type 'gui' cmd", async () => {
-      await user.type(terminalInput, "gui{enter}");
-      expect(window.open).toHaveBeenCalled();
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        ""
-      );
-    });
-
-    it("should open mail app when user type 'email' cmd", async () => {
-      await user.type(terminalInput, "email{enter}");
-      expect(window.open).toHaveBeenCalled();
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        "contact@satnaing.dev"
-      );
-    });
-
-    const nums = [1, 2, 3, 4];
-    nums.forEach(num => {
-      it(`should redirect to project URL when user type 'projects go ${num}' cmd`, async () => {
-        await user.type(terminalInput, `projects go ${num}{enter}`);
-        expect(window.open).toHaveBeenCalled();
-      });
-    });
-
-    nums.forEach(num => {
-      it(`should redirect to social media when user type 'socials go ${num}' cmd`, async () => {
-        await user.type(terminalInput, `socials go ${num}{enter}`);
-        expect(window.open).toHaveBeenCalled();
-      });
-    });
   });
 
   describe("Invalid Arguments", () => {
-    const specialUsageCmds = ["themes", "socials", "projects"];
-    const usageCmds = allCmds.filter(
-      cmd => !["echo", ...specialUsageCmds].includes(cmd)
-    );
+    const usageCmds = allCmds.filter(cmd => cmd !== "clear");
 
     usageCmds.forEach(cmd => {
       it(`should return usage component for ${cmd} cmd with invalid arg`, async () => {
@@ -182,35 +99,6 @@ describe("Terminal Component", () => {
         expect(screen.getByTestId("usage-output").innerHTML).toBe(
           `Usage: ${cmd}`
         );
-      });
-    });
-
-    specialUsageCmds.forEach(cmd => {
-      it(`should return usage component for '${cmd}' cmd with invalid arg`, async () => {
-        await user.type(terminalInput, `${cmd} sth{enter}`);
-        expect(screen.getByTestId(`${cmd}-invalid-arg`)).toBeInTheDocument();
-      });
-
-      it(`should return usage component for '${cmd}' cmd with extra args`, async () => {
-        const arg = cmd === "themes" ? "set light" : "go 1";
-        await user.type(terminalInput, `${cmd} ${arg} extra-arg{enter}`);
-        expect(screen.getByTestId(`${cmd}-invalid-arg`)).toBeInTheDocument();
-      });
-
-      it(`should return usage component for '${cmd}' cmd with incorrect option`, async () => {
-        const arg = cmd === "themes" ? "go light" : "set 4";
-        window.open = vi.fn();
-
-        // firstly run commands correct options
-        await user.type(terminalInput, `projects go 4{enter}`);
-        await user.type(terminalInput, `socials go 4{enter}`);
-        await user.type(terminalInput, `themes set espresso{enter}`);
-
-        // then run cmd with incorrect options
-        await user.type(terminalInput, `${cmd} ${arg}{enter}`);
-        expect(window.open).toBeCalledTimes(2);
-
-        // TODO: Test theme change
       });
     });
   });
@@ -240,16 +128,18 @@ describe("Terminal Component", () => {
 
     it("should go to previous back and forth when 'Up & Down Arrow' is pressed", async () => {
       await user.type(terminalInput, "about{enter}");
-      await user.type(terminalInput, "whoami{enter}");
-      await user.type(terminalInput, "pwd{enter}");
+      await user.type(terminalInput, "skills{enter}");
+      await user.type(terminalInput, "contact{enter}");
       await user.keyboard("{arrowup>3}");
       expect(terminalInput.value).toBe("about");
-      await user.keyboard("{arrowup>2}");
+      await user.keyboard("{arrowup}");
       expect(terminalInput.value).toBe("welcome");
-      await user.keyboard("{arrowdown>2}");
-      expect(terminalInput.value).toBe("whoami");
       await user.keyboard("{arrowdown}");
-      expect(terminalInput.value).toBe("pwd");
+      expect(terminalInput.value).toBe("about");
+      await user.keyboard("{arrowdown}");
+      expect(terminalInput.value).toBe("skills");
+      await user.keyboard("{arrowdown}");
+      expect(terminalInput.value).toBe("contact");
       await user.keyboard("{arrowdown}");
       expect(terminalInput.value).toBe("");
     });
