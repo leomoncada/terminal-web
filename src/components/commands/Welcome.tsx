@@ -32,7 +32,7 @@ const Welcome: React.FC = () => {
           </PreNameMobile>
         </PreWrapper>
         <div>
-          Welcome to my terminal portfolio. DevOps | SRE | Cloud Architect
+          Welcome to my terminal portfolio. Senior DevOps | SRE | Platform
         </div>
         <Seperator>----</Seperator>
         <div>
