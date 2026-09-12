@@ -40,11 +40,6 @@ const experienceData = [
     period: "Oct 2021 - Present",
   },
   {
-    role: "Cloud Solutions Architect (Freelance)",
-    company: "Independent",
-    period: "Nov 2019 - Present",
-  },
-  {
     role: "Senior DevOps Engineer",
     company: "Zinli",
     period: "Jun 2020 - Nov 2021",
@@ -68,11 +63,6 @@ const experienceData = [
     role: "Systems Administrator",
     company: "Le Desk S.A.",
     period: "Aug 2016 - Feb 2017",
-  },
-  {
-    role: "Technical Consultant",
-    company: "Freelance IT Works",
-    period: "Jun 2012 - Aug 2016",
   },
 ];
 
