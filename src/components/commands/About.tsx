@@ -12,17 +12,15 @@ const About: React.FC = () => {
       </p>
       <p>
         I'm a{" "}
-        <HighlightAlt>
-          DevOps Engineer, SRE, and Cloud Solutions Architect
-        </HighlightAlt>{" "}
+        <HighlightAlt>Senior DevOps / Site Reliability Engineer</HighlightAlt>{" "}
         based in Malaga, Spain.
       </p>
       <p>
-        Passionate and results-driven with 13+ years of experience
+        Ten years building and running cloud infrastructure
         <br />
-        architecting cloud solutions with AWS, GCP, and Oracle Cloud.
+        on AWS, GCP and Azure. Mostly Kubernetes, Terraform and CI/CD,
         <br />
-        Kubernetes & Docker enthusiast | CI/CD expert.
+        and lately the platform side of GenAI workloads.
       </p>
     </AboutWrapper>
   );
