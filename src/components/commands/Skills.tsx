@@ -28,7 +28,6 @@ const Skills: React.FC = () => {
   return (
     <Wrapper data-testid="skills">
       <SkillsGrid>
-        {/* TODO: Replace with your actual skills */}
         {skillCategories.map(({ category, items }) => (
           <Category key={category}>
             <CategoryName>{category}:</CategoryName>
@@ -43,39 +42,71 @@ const Skills: React.FC = () => {
 const skillCategories = [
   {
     category: "Cloud",
-    items: ["AWS", "GCP", "Heroku", "Oracle Cloud"],
+    items: ["AWS", "GCP", "Azure"],
   },
   {
     category: "Containers",
-    items: ["Docker", "Kubernetes", "Helm", "ECS"],
+    items: ["Kubernetes", "Docker", "Helm", "ECS", "EKS", "Fargate"],
   },
   {
     category: "IaC",
-    items: ["Terraform", "Serverless Framework"],
+    items: ["Terraform", "Pulumi", "CloudFormation", "AWS CDK", "Serverless"],
   },
   {
     category: "CI/CD",
-    items: ["GitLab CI", "Bitbucket Pipelines", "GitHub Actions"],
+    items: ["GitHub Actions", "GitLab CI", "Jenkins", "ArgoCD", "FluxCD"],
   },
   {
-    category: "Monitoring",
-    items: ["Datadog", "Prometheus", "Grafana", "CloudWatch"],
+    category: "Observability",
+    items: [
+      "Prometheus",
+      "Grafana",
+      "Datadog",
+      "CloudWatch",
+      "Loki",
+      "OpenTelemetry",
+    ],
   },
   {
-    category: "OS & Servers",
-    items: ["Linux", "Windows Server", "Nginx", "Apache Tomcat"],
+    category: "AI / MLOps",
+    items: [
+      "Amazon Bedrock",
+      "Claude API",
+      "MCP",
+      "RAG",
+      "pgvector",
+      "MLflow",
+      "GPU inference",
+    ],
   },
   {
-    category: "Big Data",
-    items: ["Cloudera", "Hadoop", "Hive", "Kafka", "Cassandra"],
+    category: "Security",
+    items: [
+      "IAM least-privilege",
+      "DevSecOps",
+      "HIPAA",
+      "SOC 2",
+      "Prisma Cloud",
+    ],
   },
   {
-    category: "Databases",
-    items: ["MySQL", "PostgreSQL"],
+    category: "Languages",
+    items: ["Python", "Bash"],
+  },
+  {
+    category: "Data & Edge",
+    items: ["PostgreSQL", "MySQL", "Redis", "Kafka", "Nginx", "Cloudflare"],
+  },
+  {
+    category: "OS",
+    items: ["Linux (RHEL, CentOS, Ubuntu)", "Windows Server"],
   },
   {
     category: "Certs",
-    items: ["AWS Solutions Architect - Associate"],
+    items: [
+      "Claude Certified Architect - Foundations (Anthropic)",
+      "AWS Solutions Architect - Associate",
+    ],
   },
 ];
 

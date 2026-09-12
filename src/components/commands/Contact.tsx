@@ -24,7 +24,6 @@ const Link = styled.a`
 const Contact: React.FC = () => {
   return (
     <Wrapper data-testid="contact">
-      {/* TODO: Replace with your actual contact info */}
       {contactData.map(({ label, value, url }) => (
         <ContactItem key={label}>
           <Label>{label}:</Label>
@@ -43,21 +42,24 @@ const Contact: React.FC = () => {
 
 const contactData = [
   {
+    label: "Email",
+    value: "leomarmoncadah@gmail.com",
+    url: "mailto:leomarmoncadah@gmail.com",
+  },
+  {
     label: "LinkedIn",
     value: "linkedin.com/in/leomar-moncada",
     url: "https://www.linkedin.com/in/leomar-moncada/",
   },
-  // TODO: Add your email and GitHub when ready
-  // {
-  //   label: "Email",
-  //   value: "your@email.com",
-  //   url: "mailto:your@email.com",
-  // },
-  // {
-  //   label: "GitHub",
-  //   value: "github.com/your-username",
-  //   url: "https://github.com/your-username",
-  // },
+  {
+    label: "GitHub",
+    value: "github.com/leomoncada",
+    url: "https://github.com/leomoncada",
+  },
+  {
+    label: "Location",
+    value: "Malaga, Spain (open to remote)",
+  },
 ];
 
 export default Contact;

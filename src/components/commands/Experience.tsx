@@ -22,7 +22,6 @@ const Period = styled.div`
 const Experience: React.FC = () => {
   return (
     <Wrapper data-testid="experience">
-      {/* TODO: Replace with your actual experience */}
       {experienceData.map(({ role, company, period }) => (
         <ExpItem key={`${company}-${role}`}>
           <Role>{role}</Role>
@@ -46,27 +45,27 @@ const experienceData = [
     period: "Nov 2019 - Present",
   },
   {
-    role: "DevOps Engineer",
+    role: "Senior DevOps Engineer",
     company: "Zinli",
     period: "Jun 2020 - Nov 2021",
   },
   {
-    role: "DevOps SRE",
+    role: "DevOps / SRE Engineer",
     company: "Naranja X",
     period: "Jun 2019 - Jun 2020",
   },
   {
     role: "Cloud Engineer",
-    company: "Accenture Argentina",
+    company: "Accenture",
     period: "Jun 2018 - Jun 2019",
   },
   {
-    role: "System Administrator",
-    company: "SONDA",
+    role: "Systems Administrator",
+    company: "Sonda",
     period: "Mar 2017 - Jun 2018",
   },
   {
-    role: "DevOps Engineer",
+    role: "Systems Administrator",
     company: "Le Desk S.A.",
     period: "Aug 2016 - Feb 2017",
   },
