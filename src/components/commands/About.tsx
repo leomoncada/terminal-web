@@ -3,31 +3,27 @@ import {
   HighlightAlt,
   HighlightSpan,
 } from "../styles/About.styled";
+import { useLang } from "../../i18n/LangContext";
+import { profile } from "../../i18n/profile";
 
 const About: React.FC = () => {
+  const { hi, role, paragraphs } = useLang().t.about;
+
   return (
     <AboutWrapper data-testid="about">
       <p>
-        Hi, my name is <HighlightSpan>Leomar Moncada</HighlightSpan>!
+        {hi[0]}
+        <HighlightSpan>{profile.name}</HighlightSpan>
+        {hi[1]}
       </p>
       <p>
-        I'm a{" "}
-        <HighlightAlt>Senior DevOps / SRE / Platform Engineer</HighlightAlt>{" "}
-        based in Málaga, Spain.
+        {role[0]}
+        <HighlightAlt>{role[1]}</HighlightAlt>
+        {role[2]}
       </p>
-      <p>
-        10+ years in infrastructure, fully remote since 2020 for companies in
-        the US and Latin America. I build and run the platform layer product
-        teams ship on: AWS provisioned with Terraform, workloads on Kubernetes
-        and ECS, and GitOps delivery that promotes the same artifact from
-        staging to production.
-      </p>
-      <p>
-        Much of that work was in regulated fintech and healthcare (Central Bank
-        of Panama, HIPAA, SOC 2), so security lives inside the pipeline. Lately
-        I also extend these platforms to host GenAI workloads on AWS.
-      </p>
-      <p>Open to remote roles.</p>
+      {paragraphs.map(text => (
+        <p key={text}>{text}</p>
+      ))}
     </AboutWrapper>
   );
 };

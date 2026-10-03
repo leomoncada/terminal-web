@@ -34,3 +34,14 @@ export const KeyContainer = styled.div`
     margin-top: 0.25rem;
   }
 `;
+
+export const KeyLabel = styled.span`
+  display: inline-block;
+  min-width: 17ch;
+`;
+
+export const EggsHint = styled.div`
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+  color: ${({ theme }) => theme.colors?.text[300]};
+`;

@@ -50,6 +50,7 @@ export const Seperator = styled.div`
 
 export const Cmd = styled.span`
   color: ${({ theme }) => theme.colors?.primary};
+  white-space: nowrap;
 `;
 
 export const Link = styled.a`

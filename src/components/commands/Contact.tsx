@@ -1,5 +1,7 @@
 import { Wrapper } from "../styles/Output.styled";
 import styled from "styled-components";
+import { contacts } from "../../i18n/profile";
+import { useLang } from "../../i18n/LangContext";
 
 const ContactItem = styled.div`
   display: flex;
@@ -22,44 +24,24 @@ const Link = styled.a`
 `;
 
 const Contact: React.FC = () => {
+  const [locationLabel, location] = useLang().t.location;
+
   return (
     <Wrapper data-testid="contact">
-      {contactData.map(({ label, value, url }) => (
+      {contacts.map(({ label, value, url }) => (
         <ContactItem key={label}>
           <Label>{label}:</Label>
-          {url ? (
-            <Link href={url} target="_blank" rel="noopener noreferrer">
-              {value}
-            </Link>
-          ) : (
-            <span>{value}</span>
-          )}
+          <Link href={url} target="_blank" rel="noopener noreferrer">
+            {value}
+          </Link>
         </ContactItem>
       ))}
+      <ContactItem>
+        <Label>{locationLabel}:</Label>
+        <span>{location}</span>
+      </ContactItem>
     </Wrapper>
   );
 };
-
-const contactData = [
-  {
-    label: "Email",
-    value: "leomarmoncadah@gmail.com",
-    url: "mailto:leomarmoncadah@gmail.com",
-  },
-  {
-    label: "LinkedIn",
-    value: "linkedin.com/in/leomar-moncada",
-    url: "https://www.linkedin.com/in/leomar-moncada/",
-  },
-  {
-    label: "GitHub",
-    value: "github.com/leomoncada",
-    url: "https://github.com/leomoncada",
-  },
-  {
-    label: "Location",
-    value: "Málaga, Spain (open to remote)",
-  },
-];
 
 export default Contact;

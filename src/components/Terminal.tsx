@@ -8,6 +8,7 @@ import React, {
 import _ from "lodash";
 import Output from "./Output";
 import TermInfo from "./TermInfo";
+import CommandMenu, { MenuToggle } from "./CommandMenu";
 import {
   CmdNotFound,
   Empty,
@@ -16,27 +17,27 @@ import {
   Input,
   MobileBr,
   MobileSpan,
+  TopBar,
   Wrapper,
 } from "./styles/Terminal.styled";
-import { argTab } from "../utils/funcs";
+import { argTab, parseCommand } from "../utils/funcs";
+import { commands, hiddenCommands } from "../utils/commands";
+import { isLang, useLang } from "../i18n/LangContext";
 
-type Command = {
-  cmd: string;
-  desc: string;
-  tab: number;
-}[];
+export { commands, hiddenCommands };
 
-export const commands: Command = [
-  { cmd: "about", desc: "about Leomar Moncada", tab: 8 },
-  { cmd: "clear", desc: "clear the terminal", tab: 8 },
-  { cmd: "contact", desc: "how to reach me", tab: 6 },
-  { cmd: "experience", desc: "my work experience", tab: 3 },
-  { cmd: "help", desc: "check available commands", tab: 9 },
-  { cmd: "history", desc: "view command history", tab: 6 },
-  { cmd: "projects", desc: "things I've built", tab: 5 },
-  { cmd: "skills", desc: "my DevOps stack & certs", tab: 7 },
-  { cmd: "welcome", desc: "display hero section", tab: 6 },
-];
+const isKnownCommand = (cmd: string) =>
+  _.some(commands, { cmd }) || hiddenCommands.includes(cmd);
+
+const MENU_KEY = "menu";
+
+const loadMenuPref = () => {
+  try {
+    return localStorage.getItem(MENU_KEY) === "on";
+  } catch {
+    return false;
+  }
+};
 
 type Term = {
   arg: string[];
@@ -56,12 +57,16 @@ export const termContext = createContext<Term>({
 const Terminal = () => {
   const containerRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const latestRef = useRef<HTMLDivElement>(null);
+  const { setLang, t } = useLang();
 
   const [inputVal, setInputVal] = useState("");
   const [cmdHistory, setCmdHistory] = useState<string[]>(["welcome"]);
   const [rerender, setRerender] = useState(false);
   const [hints, setHints] = useState<string[]>([]);
   const [pointer, setPointer] = useState(-1);
+  const [menuOpen, setMenuOpen] = useState(loadMenuPref);
+  const [scrollToLatest, setScrollToLatest] = useState(false);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,13 +76,43 @@ const Terminal = () => {
     [inputVal]
   );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setCmdHistory([inputVal, ...cmdHistory]);
+  const runCommand = (value: string) => {
+    const [cmd, ...arg] = parseCommand(value);
+    if (cmd === "lang" && arg.length === 1 && isLang(arg[0])) setLang(arg[0]);
+
+    setCmdHistory([value, ...cmdHistory]);
     setInputVal("");
     setRerender(true);
     setHints([]);
     setPointer(-1);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    runCommand(inputVal);
+  };
+
+  // A clicked command shows its output from the top, typed ones keep the
+  // terminal pinned to the prompt
+  const handleMenuCommand = (value: string) => {
+    runCommand(value);
+    setScrollToLatest(true);
+  };
+
+  useEffect(() => {
+    if (!scrollToLatest) return;
+    latestRef.current?.scrollIntoView?.({ block: "start" });
+    setScrollToLatest(false);
+  }, [scrollToLatest]);
+
+  const toggleMenu = () => {
+    const next = !menuOpen;
+    setMenuOpen(next);
+    try {
+      localStorage.setItem(MENU_KEY, next ? "on" : "off");
+    } catch {
+      // storage unavailable, the toggle lasts for this visit only
+    }
   };
 
   const clearHistory = () => {
@@ -85,8 +120,10 @@ const Terminal = () => {
     setHints([]);
   };
 
-  // focus on input when terminal is clicked
-  const handleDivClick = () => {
+  // focus on input when terminal is clicked, except from the menu so
+  // phones don't pop the keyboard on every tap
+  const handleDivClick = (e: MouseEvent) => {
+    if ((e.target as HTMLElement | null)?.closest?.("[data-menu]")) return;
     inputRef.current && inputRef.current.focus();
   };
   useEffect(() => {
@@ -103,7 +140,8 @@ const Terminal = () => {
     const ctrlL = e.ctrlKey && e.key.toLowerCase() === "l";
 
     // if Tab or Ctrl + I
-    if (e.key === "Tab" || ctrlI) {
+    // an empty prompt lets Tab move focus on, so keyboard users can leave it
+    if ((e.key === "Tab" && inputVal) || ctrlI) {
       e.preventDefault();
       if (!inputVal) return;
 
@@ -175,67 +213,83 @@ const Terminal = () => {
   }, [inputRef, inputVal, pointer]);
 
   return (
-    <Wrapper data-testid="terminal-wrapper" ref={containerRef}>
-      {hints.length > 1 && (
-        <div>
-          {hints.map(hCmd => (
-            <Hints key={hCmd}>{hCmd}</Hints>
-          ))}
-        </div>
-      )}
-      <Form onSubmit={handleSubmit}>
-        <label htmlFor="terminal-input">
-          <TermInfo /> <MobileBr />
-          <MobileSpan>&#62;</MobileSpan>
-        </label>
-        <Input
-          title="terminal-input"
-          type="text"
-          id="terminal-input"
-          autoComplete="off"
-          spellCheck="false"
-          autoFocus
-          autoCapitalize="off"
-          ref={inputRef}
-          value={inputVal}
-          onKeyDown={handleKeyDown}
-          onChange={handleChange}
+    <>
+      <TopBar>
+        <MenuToggle
+          open={menuOpen}
+          onToggle={toggleMenu}
+          controls="command-menu"
         />
-      </Form>
-
-      {cmdHistory.map((cmdH, index) => {
-        const commandArray = _.split(_.trim(cmdH), " ");
-        const validCommand = _.find(commands, { cmd: commandArray[0] });
-        const contextValue = {
-          arg: _.drop(commandArray),
-          history: cmdHistory,
-          rerender,
-          index,
-          clearHistory,
-        };
-        return (
-          <div key={_.uniqueId(`${cmdH}_`)}>
-            <div>
-              <TermInfo />
-              <MobileBr />
-              <MobileSpan>&#62;</MobileSpan>
-              <span data-testid="input-command">{cmdH}</span>
-            </div>
-            {validCommand ? (
-              <termContext.Provider value={contextValue}>
-                <Output index={index} cmd={commandArray[0]} />
-              </termContext.Provider>
-            ) : cmdH === "" ? (
-              <Empty />
-            ) : (
-              <CmdNotFound data-testid={`not-found-${index}`}>
-                command not found: {cmdH}
-              </CmdNotFound>
-            )}
+      </TopBar>
+      <Wrapper data-testid="terminal-wrapper" ref={containerRef}>
+        {menuOpen && (
+          <CommandMenu id="command-menu" onRun={handleMenuCommand} />
+        )}
+        {hints.length > 1 && (
+          <div>
+            {hints.map(hCmd => (
+              <Hints key={hCmd}>{hCmd}</Hints>
+            ))}
           </div>
-        );
-      })}
-    </Wrapper>
+        )}
+        <Form onSubmit={handleSubmit}>
+          <label htmlFor="terminal-input">
+            <TermInfo /> <MobileBr />
+            <MobileSpan>&#62;</MobileSpan>
+          </label>
+          <Input
+            title="terminal-input"
+            aria-label={t.inputLabel}
+            type="text"
+            id="terminal-input"
+            autoComplete="off"
+            spellCheck="false"
+            autoFocus
+            autoCapitalize="off"
+            ref={inputRef}
+            value={inputVal}
+            onKeyDown={handleKeyDown}
+            onChange={handleChange}
+          />
+        </Form>
+
+        {cmdHistory.map((cmdH, index) => {
+          const commandArray = parseCommand(cmdH);
+          const validCommand = isKnownCommand(commandArray[0]);
+          const contextValue = {
+            arg: _.drop(commandArray),
+            history: cmdHistory,
+            rerender,
+            index,
+            clearHistory,
+          };
+          return (
+            <div
+              key={_.uniqueId(`${cmdH}_`)}
+              ref={index === 0 ? latestRef : undefined}
+            >
+              <div>
+                <TermInfo />
+                <MobileBr />
+                <MobileSpan>&#62;</MobileSpan>
+                <span data-testid="input-command">{cmdH}</span>
+              </div>
+              {validCommand ? (
+                <termContext.Provider value={contextValue}>
+                  <Output index={index} cmd={commandArray[0]} />
+                </termContext.Provider>
+              ) : cmdH === "" ? (
+                <Empty />
+              ) : (
+                <CmdNotFound data-testid={`not-found-${index}`}>
+                  command not found: {cmdH}
+                </CmdNotFound>
+              )}
+            </div>
+          );
+        })}
+      </Wrapper>
+    </>
   );
 };
 

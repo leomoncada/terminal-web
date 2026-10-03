@@ -2,27 +2,35 @@ import {
   Cmd,
   CmdDesc,
   CmdList,
+  EggsHint,
   HelpWrapper,
   KeyContainer,
+  KeyLabel,
 } from "../styles/Help.styled";
-import { commands } from "../Terminal";
+import { commands } from "../../utils/commands";
 import { generateTabs } from "../../utils/funcs";
+import { useLang } from "../../i18n/LangContext";
 
 const Help: React.FC = () => {
+  const { desc, keys, eggs } = useLang().t.help;
+
   return (
     <HelpWrapper data-testid="help">
-      {commands.map(({ cmd, desc, tab }) => (
+      {commands.map(({ cmd, tab }) => (
         <CmdList key={cmd}>
           <Cmd>{cmd}</Cmd>
           {generateTabs(tab)}
-          <CmdDesc>- {desc}</CmdDesc>
+          <CmdDesc>- {desc[cmd]}</CmdDesc>
         </CmdList>
       ))}
       <KeyContainer>
-        <div>Tab or Ctrl + i&nbsp; =&gt; autocompletes the command</div>
-        <div>Up Arrow {generateTabs(5)} =&gt; go back to previous command</div>
-        <div>Ctrl + l {generateTabs(5)} =&gt; clear the terminal</div>
+        {keys.map(([key, action]) => (
+          <div key={key}>
+            <KeyLabel>{key}</KeyLabel>=&gt; {action}
+          </div>
+        ))}
       </KeyContainer>
+      <EggsHint>{eggs}</EggsHint>
     </HelpWrapper>
   );
 };

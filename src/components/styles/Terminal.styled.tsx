@@ -1,12 +1,25 @@
 import styled from "styled-components";
 
+export const TopBar = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+
+  @media (max-width: 550px) {
+    padding: 0 0.75rem;
+  }
+`;
+
 export const Wrapper = styled.div`
   padding: 1.25rem;
-  padding-top: 0.75rem;
+  padding-top: 0;
 
   display: flex;
   flex-direction: column-reverse;
-  max-height: calc(100vh - 2rem);
+  max-height: calc(100vh - 3.75rem);
   overflow-y: auto;
 `;
 

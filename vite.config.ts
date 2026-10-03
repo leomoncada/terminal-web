@@ -12,6 +12,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      manifest: false,
     }),
   ],
   test: {
