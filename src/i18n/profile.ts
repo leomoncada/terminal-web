@@ -25,6 +25,10 @@ export const contacts = [
 
 export const projects = [
   {
+    name: "k8s-gitops-slo-platform",
+    stack: "Kubernetes · Argo CD · Sloth · Prometheus · Tempo · Chaos Mesh",
+  },
+  {
     name: "aws-serverless-golden-path",
     stack: "Python · cookiecutter · LocalStack · GitHub Actions",
   },

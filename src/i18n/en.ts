@@ -160,6 +160,8 @@ const en: Content = {
   ],
   projects: {
     desc: {
+      "k8s-gitops-slo-platform":
+        "Kubernetes on kind with Argo CD GitOps and Sloth SLOs, exercised by six reproducible incidents that CI runs on fresh clusters, timing detection and recovery.",
       "aws-serverless-golden-path":
         "Template that generates a serverless AWS service, verifies it against LocalStack in CI with no cloud credentials, and opens cruft update PRs to keep generated services current.",
       "localstack-ephemeral-infra":
