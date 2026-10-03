@@ -12,7 +12,7 @@ Based on [satnaing/terminal-portfolio](https://github.com/satnaing/terminal-port
 | `skills`     | My tech stack and tools  |
 | `experience` | My work experience       |
 | `contact`    | How to reach me          |
-| `resume`     | Download my CV           |
+| `projects`   | Things I've built        |
 | `help`       | List available commands  |
 | `history`    | View command history     |
 | `clear`      | Clear the terminal       |
@@ -37,8 +37,7 @@ Deployed automatically to GitHub Pages via GitHub Actions on push to `main`.
 
 ## Customization
 
-- **Content**: Edit files in `src/components/commands/` (look for `TODO` comments)
-- **Resume PDF**: Place your `resume.pdf` in the `public/` folder
+- **Content**: Edit files in `src/components/commands/`
 - **Domain**: Add a `CNAME` file in `public/` with your domain, then configure DNS
 - **Meta tags**: Update `index.html`
 

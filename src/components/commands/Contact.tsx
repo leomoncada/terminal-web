@@ -58,7 +58,7 @@ const contactData = [
   },
   {
     label: "Location",
-    value: "Malaga, Spain (open to remote)",
+    value: "Málaga, Spain (open to remote)",
   },
 ];
 

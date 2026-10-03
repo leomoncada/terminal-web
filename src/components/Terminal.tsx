@@ -33,6 +33,7 @@ export const commands: Command = [
   { cmd: "experience", desc: "my work experience", tab: 3 },
   { cmd: "help", desc: "check available commands", tab: 9 },
   { cmd: "history", desc: "view command history", tab: 6 },
+  { cmd: "projects", desc: "things I've built", tab: 5 },
   { cmd: "skills", desc: "my DevOps stack & certs", tab: 7 },
   { cmd: "welcome", desc: "display hero section", tab: 6 },
 ];

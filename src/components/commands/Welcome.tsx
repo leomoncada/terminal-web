@@ -33,6 +33,7 @@ const Welcome: React.FC = () => {
         </PreWrapper>
         <div>
           Welcome to my terminal portfolio. Senior DevOps | SRE | Platform
+          Engineer
         </div>
         <Seperator>----</Seperator>
         <div>

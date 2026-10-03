@@ -58,6 +58,7 @@ describe("Terminal Component", () => {
       "experience",
       "help",
       "history",
+      "projects",
       "skills",
     ];
     testCmds.forEach(cmd => {

@@ -5,6 +5,7 @@ import Experience from "./commands/Experience";
 import Help from "./commands/Help";
 import Welcome from "./commands/Welcome";
 import History from "./commands/History";
+import Projects from "./commands/Projects";
 import Skills from "./commands/Skills";
 import { OutputContainer, UsageDiv } from "./styles/Output.styled";
 import { termContext } from "./Terminal";
@@ -31,6 +32,7 @@ const Output: React.FC<Props> = ({ index, cmd }) => {
           experience: <Experience />,
           help: <Help />,
           history: <History />,
+          projects: <Projects />,
           skills: <Skills />,
           welcome: <Welcome />,
         }[cmd]

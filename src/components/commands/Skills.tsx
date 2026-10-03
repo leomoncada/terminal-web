@@ -16,8 +16,13 @@ const Category = styled.div`
 
 const CategoryName = styled.span`
   color: ${({ theme }) => theme.colors.secondary};
-  min-width: 120px;
+  min-width: 17ch;
   display: inline-block;
+
+  @media (max-width: 550px) {
+    display: block;
+    width: 100%;
+  }
 `;
 
 const SkillTag = styled.span`
@@ -42,70 +47,85 @@ const Skills: React.FC = () => {
 const skillCategories = [
   {
     category: "Cloud",
-    items: ["AWS", "GCP", "Azure"],
+    items: [
+      "AWS (EC2, ECS, EKS, Lambda, VPC, RDS, DynamoDB, S3, Organizations)",
+      "GCP",
+      "Azure",
+    ],
   },
   {
     category: "Containers",
-    items: ["Kubernetes", "Docker", "Helm", "ECS", "EKS", "Fargate"],
+    items: ["Kubernetes (EKS)", "Helm", "Docker", "ECS", "Fargate"],
   },
   {
     category: "IaC",
-    items: ["Terraform", "Pulumi", "CloudFormation", "AWS CDK", "Serverless"],
+    items: [
+      "Terraform",
+      "Pulumi",
+      "CloudFormation",
+      "AWS CDK",
+      "Serverless Framework",
+      "Ansible",
+    ],
   },
   {
-    category: "CI/CD",
-    items: ["GitHub Actions", "GitLab CI", "Jenkins", "ArgoCD", "FluxCD"],
+    category: "CI/CD & GitOps",
+    items: [
+      "GitHub Actions",
+      "GitLab CI",
+      "Jenkins",
+      "Bitbucket Pipelines",
+      "Argo CD",
+      "FluxCD",
+    ],
   },
   {
     category: "Observability",
     items: [
       "Prometheus",
       "Grafana",
-      "Datadog",
-      "CloudWatch",
       "Loki",
       "OpenTelemetry",
-    ],
-  },
-  {
-    category: "AI / MLOps",
-    items: [
-      "Amazon Bedrock",
-      "Claude API",
-      "MCP",
-      "RAG",
-      "pgvector",
-      "MLflow",
-      "GPU inference",
+      "Datadog",
+      "CloudWatch",
+      "ELK",
     ],
   },
   {
     category: "Security",
     items: [
-      "IAM least-privilege",
-      "DevSecOps",
+      "IAM least privilege",
+      "KMS",
+      "Secrets Manager",
+      "WAF",
+      "GuardDuty",
+      "Prisma Cloud",
+      "checkov",
       "HIPAA",
       "SOC 2",
-      "Prisma Cloud",
     ],
   },
   {
-    category: "Languages",
-    items: ["Python", "Bash"],
+    category: "Linux & Systems",
+    items: ["Red Hat", "Ubuntu", "Windows Server", "Nginx", "Apache"],
   },
   {
-    category: "Data & Edge",
-    items: ["PostgreSQL", "MySQL", "Redis", "Kafka", "Nginx", "Cloudflare"],
+    category: "Scripting",
+    items: ["Bash", "Python"],
   },
   {
-    category: "OS",
-    items: ["Linux (RHEL, CentOS, Ubuntu)", "Windows Server"],
+    category: "Data",
+    items: ["PostgreSQL", "MySQL", "Redis", "DynamoDB", "Kafka"],
+  },
+  {
+    category: "AI Infra",
+    items: ["Amazon Bedrock", "RAG", "pgvector", "MLflow", "Claude Code"],
   },
   {
     category: "Certs",
     items: [
-      "Claude Certified Architect - Foundations (Anthropic)",
       "AWS Solutions Architect - Associate",
+      "Claude Certified Architect - Foundations (2026)",
     ],
   },
 ];
